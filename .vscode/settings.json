@@ -1,0 +1,67 @@
+{
+  "yaml.schemas": {
+    "https://docs.unoverse.ai/schemas/nodes/package.schema.json": [
+      "nodes/*/package.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/credential.schema.json": [
+      "nodes/*/credentials/*.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/node.schema.json": [
+      "nodes/*/nodes/*/node.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/interface.schema.json": [
+      "nodes/*/nodes/*/interface.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/config.schema.json": [
+      "nodes/*/nodes/*/config.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/test.schema.json": [
+      "nodes/*/nodes/*/test.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/run.schema.json": [
+      "nodes/*/nodes/*/api/run.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/events.schema.json": [
+      "nodes/*/nodes/*/api/events.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/service.schema.json": [
+      "nodes/*/nodes/*/api/service.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/toolExchange.schema.json": [
+      "nodes/*/nodes/*/api/toolExchange.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/nodes/audio.schema.json": [
+      "nodes/*/nodes/*/api/audio.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/objects/object.schema.json": [
+      "objects/*/!(props|test|service|make|dataset).yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/objects/dataset.schema.json": [
+      "objects/*/dataset.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/objects/props.schema.json": [
+      "objects/*/props.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/objects/service.schema.json": [
+      "objects/*/api/service.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/objects/make.schema.json": [
+      "objects/*/api/make.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/objects/test.schema.json": [
+      "objects/*/test.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/pipelines/pipeline.schema.json": [
+      "pipelines/*/pipeline.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/pipelines/config.schema.json": [
+      "pipelines/*/config.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/pipelines/interface.schema.json": [
+      "pipelines/*/interface.yaml"
+    ],
+    "https://docs.unoverse.ai/schemas/pipelines/test.schema.json": [
+      "pipelines/*/test.yaml"
+    ]
+  }
+}

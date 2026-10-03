@@ -1,0 +1,18 @@
+# BRAND INGREDIENTS — raw colors named for what they ARE (ink, paper, a signature
+# hue), never for where they are used ("button-blue" is a decision, not an ingredient;
+# a theme file makes decisions). These are inert until a theme assigns them to roles,
+# so this file is safe to grow before you have a theme at all.
+#
+# Delete the examples and name your own. Guide: see README.md in this folder.
+color:
+  $type: color
+  brand:
+    ink:
+      $value: "#1a1a2e"
+      $description: "Near-black with a hint of the brand hue — body text and headings"
+    paper:
+      $value: "#fbfaf8"
+      $description: "Warm off-white — page and card backgrounds"
+    signature:
+      $value: "#4f46e5"
+      $description: "The brand's signature hue — actions and accents"

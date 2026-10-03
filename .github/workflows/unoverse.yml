@@ -1,0 +1,19 @@
+# Checks every pull request with the same lint a universe runs before applying a commit.
+# Universes pull this repo themselves: there is nothing to deploy from here.
+# https://docs.unoverse.ai/architecture/environments
+name: unoverse
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npx --yes unoverse@latest lint

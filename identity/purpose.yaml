@@ -1,0 +1,14 @@
+# The org's purpose: its own words, and only those. The briefs, the limits and the shape are the
+# purpose object's (design/marketplace/objects/purpose/); this file carries the answers as defaults.
+unoverse: "1.0"
+type: identity
+extends: purpose
+props:
+  statement:
+    default: ""
+  values:
+    default: []
+  ambition:
+    default: ""
+  goals:
+    default: []
