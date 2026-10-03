@@ -4,7 +4,7 @@ A complete org, laid out the way every org's own repo is. Clone it to see how on
 what you need into your own org, or connect it to a universe and watch it arrive.
 
 ```
-org-acme/
+acme/
   unoverse.yaml   org: acme   (this repo is one org; the name is declared here)
   styles/         Acme's tokens, on top of the shared design system
   identity/       organisation, brand, purpose, story
