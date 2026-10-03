@@ -1,0 +1,40 @@
+type: Box
+visibleWhen: active
+style:
+  direction: row
+  gap: "2"
+  align: start
+children:
+  - type: Box
+    style:
+      direction: column
+      flex: 1
+      gap: "2"
+      minWidth: 0
+    children:
+      - type: ComponentSlot
+        select: {}
+      - type: Box
+        visibleWhen: streaming
+        children:
+          - type: Box
+            visibleWhen: empty
+            style:
+              direction: row
+              gap: "2"
+              align: center
+            children:
+              - $include: components/thinking-dots
+              - type: Text
+                bind:
+                  value: thinkingText
+                style:
+                  font: body.sm
+                  color: text.secondary
+      - type: Text
+        visibleWhen: time
+        bind:
+          value: time
+        style:
+          font: body.sm
+          color: text.secondary

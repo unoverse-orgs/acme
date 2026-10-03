@@ -1,0 +1,29 @@
+# WHAT THIS NODE CONNECTS TO. Two outputs is the signature streaming pair: the live
+# feed for whoever wants to watch, and the settled answer for whoever wants the
+# result. Wire `stream` to a streaming text component and the reply appears as it is
+# written; wire `text` onward and downstream nodes get one finished string.
+
+inputs:
+  - name: signal
+    type: object
+    description: Data from previous nodes that can be referenced in templates
+
+outputs:
+  - name: stream
+    type: object
+    description: The reply so far, emitted repeatedly while the model writes
+
+  - name: text
+    type: string
+    description: The complete reply, emitted once at the end
+
+# THE CREDENTIAL THIS NODE NEEDS, referenced by NAME. The shape it points at is
+# credentials/openAICredential.yaml in this package: fields, which are secret, what
+# the collecting form shows. The VALUE is never in any file. On a universe it is
+# entered once and stored encrypted; locally it is read from .env as
+# OPENAI_API_KEY. https://docs.unoverse.ai/nodes/credentials
+credentials:
+  - name: openAICredential
+    required: true
+    displayName: OpenAI API
+    description: How this node authenticates to OpenAI

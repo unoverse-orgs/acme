@@ -1,0 +1,23 @@
+# ONE ROW PER OUTPUT, in interface.yaml order. On a streaming call each row names the
+# event type it fires on with `match`, and there are two rows here because a streaming
+# node answers twice: continuously while writing, and once when done.
+# https://docs.unoverse.ai/nodes/node-types
+
+# THE LIVE FEED. Two settings here are worth copying into any streaming node you
+# write. `accumulate: true` emits the reply SO FAR rather than the newest fragment: a
+# stream of single words is almost never what a consumer wants. `throttleMs` bounds
+# how often it emits, or a long answer becomes hundreds of events; nothing held back
+# is lost, whatever is pending is flushed when the run ends.
+- emit: stream
+  from: response
+  match: response.output_text.delta
+  value: "return response.delta"
+  accumulate: true
+  throttleMs: 200
+
+# THE SETTLED ANSWER. `from: complete` fires once at the end, over everything the
+# node emitted, which is how a streaming node also produces one finished value.
+# `.at(-1)` and not `.pop()`: expressions are sandboxed and nothing mutates.
+- emit: text
+  from: complete
+  value: "return events.filter(e => e.emit === 'stream').map(e => e.value).at(-1) ?? ''"

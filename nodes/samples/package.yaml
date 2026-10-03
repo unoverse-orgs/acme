@@ -1,0 +1,41 @@
+# THE PACKAGE ENVELOPE. Every node package has exactly one of these.
+#
+# A node is a folder of YAML that the platform interprets. There is no TypeScript,
+# no package.json, no build step and no publish step. The full format:
+# https://docs.unoverse.ai/nodes/package-marketplace
+#
+# This package holds two worked examples, one of each node kind:
+#
+#   nodes/AcmeWeather/     a PromiseNode.  Two chained calls, one settled answer.
+#   nodes/AcmeChatStream/  a CallbackNode. A reply that streams in as it is written.
+#
+# Read them in that order. Then read the guide they follow:
+# https://docs.unoverse.ai/nodes/overview
+
+name: samples
+displayName: Sample Nodes
+description: Two worked examples for learning the node format, one PromiseNode and one CallbackNode
+version: 0.1.0
+category: productivity
+
+features:
+  - Weather for any city, no API key needed
+  - Streaming chat completion, showing how credentials work
+
+# THE ONLY HOSTS THIS PACKAGE'S NODES MAY CALL. Deny by default, https only.
+#
+# A manifest cannot execute code, but without this list it could still say "send this
+# credential to evil.example", which is exfiltration with no code at all. One short
+# reviewable list is what makes a node package safe to accept from someone else.
+# The executor refuses any request to a host not named here.
+allowedHosts:
+  - geocoding-api.open-meteo.com
+  - api.open-meteo.com
+  - api.openai.com
+
+# EXECUTOR CAPABILITIES these manifests depend on. A deploy is refused if the target
+# universe's executor cannot satisfy them, so a manifest can never name a capability
+# that only exists on a newer executor.
+requires:
+  credential: [bearer]
+  transport: [json, sse]

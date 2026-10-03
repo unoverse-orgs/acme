@@ -1,0 +1,24 @@
+# A FIXTURE THAT RUNS, against the real service. Every node needs one: a node that
+# lints but has never run is not done, because only a run proves the manifest
+# describes the real API rather than something merely coherent.
+#
+# Run it from Studio's Nodes screen (Load sample, then Run), or:
+#   unoverse node test AcmeWeather
+#
+# Assert the SHAPE, never exact words: the temperature in Lisbon is not a constant.
+# https://docs.unoverse.ai/nodes/testing-nodes
+
+testData:
+  config:
+    city: Lisbon
+    days: 3
+    units: celsius
+  inputs:
+    signal: {}
+  expect:
+    weather: >-
+      return output.weather.place === "Lisbon" &&
+        typeof output.weather.current.temperature === "number" &&
+        typeof output.weather.current.condition === "string" &&
+        output.weather.daily.length === 3
+    summary: "return output.summary.length > 0 && output.summary.includes('Lisbon')"

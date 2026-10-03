@@ -1,0 +1,39 @@
+# THE SETTINGS FORM. This is a JSON schema; the platform draws the canvas form
+# from it. A `description` says what the setting DOES, not what it is called.
+# Every field type, and the run context that resolves them:
+# https://docs.unoverse.ai/nodes/config-schema
+
+configSchema:
+  type: object
+  required: [city]
+
+  properties:
+    city:
+      type: string
+      title: City
+      description: >-
+        The place to report on. A city or town name, in any language. This is a
+        template field, so a value from an earlier node works here too, e.g.
+        {{signal.inputtrigger1.output.city}}
+      default: ""
+      # `ui:field: template` is what lets a workflow supply the value at run time
+      # instead of it being fixed at build time. Every value the workflow supplies
+      # needs it.
+      ui:field: template
+
+    days:
+      type: number
+      title: Forecast days
+      description: How many days of outlook to fetch, today included
+      default: 3
+      minimum: 1
+      maximum: 7
+
+    units:
+      type: string
+      title: Units
+      description: The temperature scale everything is reported in
+      enum: [celsius, fahrenheit]
+      default: celsius
+      "ui:widget": select
+"ui:order": [city, days, units]

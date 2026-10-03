@@ -1,0 +1,18 @@
+# THE CHAT COLUMN WITH A FOCUSED COMPONENT OVER IT — core, plus the focus surface
+# laid over it. A core VARIANT, not a copy: chat-region is the same shared file
+# core.yaml includes; the only difference is the overlay slot.
+type: Box
+appWidth: chat
+style:
+  direction: column
+  minHeight: "0"
+children:
+  - type: Box
+    style:
+      direction: column
+      flex: 1
+      minHeight: "0"
+      position: relative
+    children:
+      - $include: components/chat-region
+      - $include: components/focus-overlay

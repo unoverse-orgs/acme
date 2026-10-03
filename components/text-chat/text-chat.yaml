@@ -1,0 +1,62 @@
+# THE CHAT SURFACE — a worked example component, shipped with Studio so the chat CX
+# lives in ONE place your apps can share. It is yours: rename it, restyle it (it uses
+# only foundation tokens, so your project's theme restyles it whole), or delete it.
+# Guide: https://docs.unoverse.ai/design/components.md
+unoverse: "1.0"
+kind: component
+name: text-chat
+category: Communication
+nodeSize:
+  width: 480
+  height: 400
+props:
+  # `input: false` on all three — no workflow fills them, so none of them join the
+  # node's config contract. They exist so the preview has something to draw.
+  #
+  # chatState is THE PREVIEW AXIS: Studio writes it when you step Welcome/Active. The
+  # default is EMPTY on purpose — live, nothing writes it, the Switch falls to its
+  # default case and the conversation facts pick the mood. A non-empty default would
+  # pin the mood forever.
+  chatState:
+    type: string
+    description: "Which face the chat is showing. Empty means its default."
+    input: false
+    default: ""
+    enum: ["", welcome, active]
+  # Preview defaults for the live fallback's guards (the conversation facts the
+  # platform projects for real).
+  isEmpty:
+    type: boolean
+    description: "True before any message exists, so the empty state is drawn."
+    input: false
+    default: true
+  hasMessages:
+    type: boolean
+    description: "True once the conversation has started."
+    input: false
+    default: false
+# THE STATE TREE (State Model v2): ONE public state — the single-state permanent
+# component: it lives in a template's core and templates never rearrange around it.
+# The chat's two moods NEST beneath it as PRIVATE substates (the rearrange rule: the
+# template wouldn't move, so they nest), which is also what makes them steppable in
+# Studio. The mood is DERIVED from the conversation, so the shell's default case keeps
+# its own conditions. The template has the state; this component just reacts.
+state:
+  view:
+    states:
+      chat:
+        on: chatState
+        states:
+          welcome:
+            layout: chat-welcome
+          active:
+            layout: chat-active
+root:
+  type: Switch
+  on: view
+  cases:
+    chat: { $include: layouts/chat }
+    # Ref placement: embedded in a template's core the component has no spawned
+    # instance slice, so `view` is absent from scope — the chat is still the one
+    # thing to draw.
+    default: { $include: layouts/chat }

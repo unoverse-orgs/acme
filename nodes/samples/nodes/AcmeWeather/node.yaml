@@ -1,0 +1,56 @@
+# WHAT THIS NODE IS. The one required file.
+#
+# A worked example of a PromiseNode: it makes its calls, settles once, and hands on
+# one answer. Read this folder in order: node.yaml (identity), interface.yaml
+# (connections), config.yaml (the settings form), api/run.yaml (the calls),
+# api/events.yaml (what leaves), test.yaml (the proof).
+# Format in full: https://docs.unoverse.ai/nodes/manifest-nodes
+
+# The IDENTITY a saved workflow stores. Renaming it orphans every workflow that
+# uses the node, so never rename lightly.
+type: AcmeWeather
+
+# One answer or many? A node that calls, settles and hands on ONE reply is a
+# PromiseNode. Lint checks this against the transport of the LAST call in
+# api/run.yaml (json settles; sse or ws streams).
+# https://docs.unoverse.ai/nodes/node-types
+kind: PromiseNode
+
+name: Weather Sample
+# The JOB, not the implementation, and from the platform's closed list: lint
+# refuses an invented category, because the canvas palette groups by these.
+category: Storage & Data
+color: "#4A90D9"
+
+description: Current conditions and a short forecast for any city, from Open-Meteo, no API key needed
+
+# WHENTOUSE DECIDES WHETHER THIS NODE IS EVER OFFERED. A planner ranks nodes by
+# embedding this text against the user's own words: outcome first, then what
+# disqualifies it as a property of the work, never the name of another node.
+# Read https://docs.unoverse.ai/nodes/node-discoverability before writing yours.
+whenToUse: >-
+  Get the weather for a named place: current temperature, wind, humidity and a
+  day-by-day outlook, ready to show to a person or hand to a model. Takes a city or
+  town name, not coordinates. It reports observed forecasts only; it cannot answer
+  historical climate questions.
+
+# WHO MAY RUN THIS. Compulsory on every node. `required: false` adds no requirement
+# of its own: the node runs for whoever the workflow's trigger admitted. It does NOT
+# mean public; the trigger still owns the door.
+# https://docs.unoverse.ai/nodes/who-can-run-it
+auth:
+  required: false
+  # Role-based access is one line, and naming a role implies required: true. But a
+  # role HERE is only for a claim the platform itself defines (marketplace:publish),
+  # because a published node cannot know what roles a stranger's identity provider
+  # mints. A business role like finance:approve belongs to the workflow builder: the
+  # platform puts a "Require sign-in" / "Require role" section on every node's
+  # settings form, so the person who knows their deployment's role names sets one
+  # per box. You never author those fields.
+  # role: marketplace:publish
+
+capabilities:
+  # A forecast changes hour to hour, so re-running is the correct behaviour and a
+  # cached answer would be stale, not thrifty. `cacheable: true` is ONLY for
+  # idempotent, side-effect-free reads of stable data.
+  cacheable: false

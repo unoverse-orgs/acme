@@ -1,0 +1,41 @@
+# EVERYTHING THAT LEAVES THIS NODE: one row per output connector, in the SAME ORDER
+# interface.yaml declares them. Lint holds the order and the coverage: an output with
+# no row here stays silently empty, which is the first thing to check when a
+# downstream template resolves to nothing.
+#
+# In these expressions `response` is the LAST call's reply (the forecast) and every
+# call is also readable by name as `calls.<name>`. The sandbox allows no mutation:
+# `.at(-1)` not `.pop()`, `.toSorted()` not `.sort()`.
+# https://docs.unoverse.ai/nodes/signal-routing
+
+# The full picture, shaped HERE so the component that shows it stays dumb. Anything
+# computed (rounding, pairing the daily arrays up, turning code 61 into "light rain")
+# is this node's job: definitions in design/ never compute.
+- emit: weather
+  value: >-
+    return {
+      place: calls.geocode.results[0].name,
+      country: calls.geocode.results[0].country || "",
+      unit: response.current_units.temperature_2m,
+      current: {
+        temperature: Math.round(response.current.temperature_2m),
+        feelsLike: Math.round(response.current.apparent_temperature),
+        humidity: response.current.relative_humidity_2m,
+        windSpeed: response.current.wind_speed_10m,
+        condition: helpers.describe(response.current.weather_code)
+      },
+      daily: response.daily.time.map((date, i) => ({
+        date: date,
+        high: Math.round(response.daily.temperature_2m_max[i]),
+        low: Math.round(response.daily.temperature_2m_min[i]),
+        condition: helpers.describe(response.daily.weather_code[i])
+      }))
+    }
+
+# The one-liner, for dropping straight into a sentence or a headline. Same facts,
+# second shape: emitting both is cheaper than making every consumer re-derive one.
+- emit: summary
+  value: >-
+    return Math.round(response.current.temperature_2m) + "° and " +
+      helpers.describe(response.current.weather_code) + " in " +
+      calls.geocode.results[0].name

@@ -1,0 +1,10 @@
+title: Text Chat
+description: The conversation surface, a welcome hero on an empty chat and the live message timeline once it begins.
+whenToUse: Start talking to the assistant and see the conversation itself, the welcome screen to begin from, then the running exchange of messages once the chat is underway. Not for typing a message and not a page or card of its own, it is the chat surface inside your own apps.
+category: Communication
+version: 1.0.0
+
+# The app-level LOAD MODE: absent, a component app would load in `focus`. Arrival
+# inside a template is the tree's first declared state (chat); this key keeps the app
+# load honest to it.
+defaultState: chat

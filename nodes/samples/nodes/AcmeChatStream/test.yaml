@@ -1,0 +1,21 @@
+# THE PROOF. This fixture calls the real API, so it needs your key in .env first:
+#
+#   OPENAI_API_KEY=sk-...
+#
+# (The name comes from the credential shape: openAICredential.apiKey, upper snake
+# case, so OPENAI_API_KEY.) Then run it from Studio's Nodes screen, or:
+#   unoverse node test AcmeChatStream
+#
+# Assert the shape, never exact words: the model will not say the same thing twice.
+# https://docs.unoverse.ai/nodes/testing-nodes
+
+testData:
+  config:
+    model: gpt-5.6-luna
+    prompt: Say hello in one short sentence.
+    systemPrompt: ""
+    maxTokens: 64
+  inputs:
+    signal: {}
+  expect:
+    text: "return output.text.length > 0"

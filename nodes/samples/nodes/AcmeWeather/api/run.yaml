@@ -1,0 +1,51 @@
+# THE CALLS THIS NODE MAKES. Always a list, each entry named, even for one call.
+#
+# This node is the "two calls, where the second uses the first" shape: a person types
+# a city NAME, the forecast API wants COORDINATES, so the node looks the place up and
+# then asks about it. A later call reads an earlier reply as `calls.<name>`. The node
+# orchestrates both behind one clean answer; the workflow never sees the seam.
+# https://docs.unoverse.ai/nodes/manifest-nodes
+
+# CALL 1: the place, by name. Open-Meteo's geocoder, no key needed.
+- name: geocode
+  method: GET
+  url: https://geocoding-api.open-meteo.com/v1/search
+  # `transport: json` says the reply arrives as ONE body. The streaming sample next
+  # door uses `sse`, where the reply arrives as many events.
+  transport: json
+  query:
+    name: "{{ config.city }}"
+    count: "1"
+
+  # ALWAYS write `error` where the API can answer 200 with a failure body. An unknown
+  # place is a 200 with no results, and without this rule it would flow downstream as
+  # an empty forecast instead of failing here with the true reason.
+  error:
+    when: "return !(response.results && response.results.length)"
+    message: >-
+      return 'No place named "' + config.city + '" was found. Check the spelling, or
+      try a larger town nearby.'
+
+# CALL 2: the forecast, at the coordinates call 1 found. Dot paths into an earlier
+# reply, and array indexes are dot segments too: `results.0.latitude`, never brackets.
+- name: forecast
+  method: GET
+  url: https://api.open-meteo.com/v1/forecast
+  transport: json
+  query:
+    latitude: "{{ calls.geocode.results.0.latitude }}"
+    longitude: "{{ calls.geocode.results.0.longitude }}"
+    current: temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code
+    daily: temperature_2m_max,temperature_2m_min,weather_code
+    forecast_days: "{{ config.days }}"
+    temperature_unit: "{{ config.units }}"
+    timezone: auto
+
+  timeoutMs: 30000
+
+  # Retry only what retrying can fix: rate limits and transient server errors. A 404
+  # or a bad request will fail identically every time, so it is not in the list.
+  retry:
+    attempts: 3
+    backoff: exponential
+    on: [429, 500, 502, 503, 504]

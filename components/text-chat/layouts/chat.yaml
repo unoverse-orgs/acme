@@ -1,0 +1,77 @@
+# THE SHELL of the one public state: the FULL chat CX — the header, the mood region
+# (welcome hero / live timeline), the suggestion chips over its foot, and the composer.
+# The steps switch on chatState (the declared axis): Studio writes it when you step
+# Welcome/Active. Live, nothing writes it, so the Switch falls to its default case,
+# where the projected conversation facts pick the mood.
+type: Box
+style:
+  direction: column
+  # `flex: 1` fills a flex column (the template's core); `height: full` fills a block
+  # parent with a real height (the standalone preview).
+  flex: 1
+  height: full
+  minHeight: "0"
+children:
+  - $include: components/header
+  - type: Box
+    style:
+      direction: column
+      flex: 1
+      minHeight: "0"
+      position: relative
+      when:
+        - field: hasMessages
+          eq: true
+          apply:
+            background: surface.base
+            radiusTopLeft: 2xl
+            overflow: hidden
+        - field: chatState
+          eq: active
+          apply:
+            background: surface.base
+            radiusTopLeft: 2xl
+            overflow: hidden
+            # chatState is only ever set by Studio's stepper, so this height is
+            # preview-only: live, the template's flex sizes the region.
+            minHeight: "120"
+    children:
+      - type: Switch
+        on: chatState
+        cases:
+          welcome: { $include: layouts/chat-welcome }
+          active: { $include: layouts/chat-active }
+          default:
+            type: Box
+            style:
+              direction: column
+              flex: 1
+              minHeight: "0"
+            children:
+              - type: Box
+                visibleWhen: isEmpty
+                style:
+                  direction: column
+                  flex: 1
+                  minHeight: "0"
+                children:
+                  - $include: layouts/chat-welcome
+              - type: Box
+                visibleWhen: hasMessages
+                style:
+                  direction: column
+                  flex: 1
+                  minHeight: "0"
+                children:
+                  - $include: layouts/chat-active
+      - type: Box
+        style:
+          position: absolute
+          bottom: "0"
+          left: "0"
+          right: "0"
+          direction: column
+        children:
+          - $include: components/suggestions
+  - type: Ref
+    ref: composer-bar

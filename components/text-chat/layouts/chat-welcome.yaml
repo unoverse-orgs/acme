@@ -1,0 +1,118 @@
+type: Box
+style:
+  direction: column
+  flex: 1
+  minHeight: "0"
+  overflow: hidden
+  justify: end
+  gap: "6"
+  padding: [ "8", "8", "4", "8" ]
+children:
+  - type: Box
+    style:
+      direction: column
+      align: start
+      gap: "2"
+      maxWidth: reading
+      padding: [ "0", "8", "0", "0" ]
+    children:
+      - type: Text
+        style:
+          font: display
+          color: text.primary
+          lineHeight: none
+          align: start
+        value: How can I help?
+      - type: Text
+        style:
+          font: body.lg
+          color: text.secondary
+          align: start
+        value: Ask a question, or pick a place to start.
+  - type: Each
+    style:
+      direction: row
+      align: start
+      gap: "4"
+      width: full
+      padding: [ "2", "0", "2", "0" ]
+    item:
+      type: Button
+      action: sendMessage
+      style:
+        position: relative
+        flex: 1 1 0
+        minWidth: 0
+        height: "90"
+        padding: "0"
+        radius: 2xl
+        border: none
+        overflow: hidden
+        cursor: pointer
+        transition: all 200ms ease
+        shadow: lg
+        hover:
+          shadow: xl
+          transform: scale(1.02)
+      children:
+        - type: Image
+          bind:
+            src: image
+            alt: title
+          style:
+            position: absolute
+            inset: "0"
+            width: full
+            height: full
+            fit: cover
+        - type: Box
+          style:
+            position: absolute
+            inset: "0"
+            direction: column
+            align: start
+            justify: end
+            gap: "2"
+            padding: "4"
+            background: overlay.scrim
+            textAlign: start
+          children:
+            - type: Text
+              bind:
+                value: tag
+              style:
+                font: caption
+                color: white
+                lineHeight: tight
+            - type: Text
+              bind:
+                value: title
+              style:
+                font: title
+                color: white
+                lineHeight: tight
+                align: start
+            - type: Text
+              bind:
+                value: subtitle
+              style:
+                font: body.sm
+                color: white
+                lineHeight: snug
+                align: start
+    items:
+      - image: https://picsum.photos/seed/explore/840/1160
+        tag: Explore
+        title: What can you do?
+        subtitle: See what this assistant can help with.
+        text: What can you help me with?
+      - image: https://picsum.photos/seed/learn/840/1160
+        tag: Learn
+        title: Show me around
+        subtitle: A quick tour of how this works.
+        text: Give me a quick tour of what I can do here
+      - image: https://picsum.photos/seed/start/840/1160
+        tag: Start
+        title: Jump right in
+        subtitle: Describe what you need in your own words.
+        text: I would like some help getting started

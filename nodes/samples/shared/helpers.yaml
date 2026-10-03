@@ -1,0 +1,27 @@
+# NAMED HELPERS. Any expression in this package can call these as helpers.<name>.
+#
+# An expression past a few lines gets a name here instead. A helper sees ONLY its
+# arguments and its sibling helpers, never config or credentials or the caller's
+# scope: same sandbox, no extra authority.
+# https://docs.unoverse.ai/nodes/manifest-nodes
+
+helpers:
+  # WMO weather interpretation codes, as words. Open-Meteo answers with a numeric
+  # `weather_code`; a person (and a component) wants "light rain". This mapping is
+  # LOGIC, and logic lives in the node: a definition in design/ must never compute,
+  # so the node sends words and the component just shows them.
+  describe:
+    args: [code]
+    body: >-
+      return ({
+        0: "clear skies", 1: "mainly clear", 2: "partly cloudy", 3: "overcast",
+        45: "fog", 48: "freezing fog",
+        51: "light drizzle", 53: "drizzle", 55: "heavy drizzle",
+        56: "freezing drizzle", 57: "heavy freezing drizzle",
+        61: "light rain", 63: "rain", 65: "heavy rain",
+        66: "freezing rain", 67: "heavy freezing rain",
+        71: "light snow", 73: "snow", 75: "heavy snow", 77: "snow grains",
+        80: "light showers", 81: "showers", 82: "heavy showers",
+        85: "snow showers", 86: "heavy snow showers",
+        95: "a thunderstorm", 96: "a thunderstorm with hail", 99: "a thunderstorm with heavy hail"
+      })[code] || "changeable weather"

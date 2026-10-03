@@ -1,0 +1,10 @@
+# THE CHAT REGION — one shared component (text-chat) owns the whole chat CX: the
+# welcome hero on an empty chat, the live timeline once messages exist, the suggestion
+# chips and the composer. The switching rides the projected conversation facts inside
+# the component; nothing is wired here. Shared by core and core-focus.
+#
+# A BARE ref resolves your own project's component: a ref inside a project's tree
+# matches that project first. Qualify it (`<project>/text-chat`) only if you ship two
+# projects that both carry the name.
+type: Ref
+ref: text-chat

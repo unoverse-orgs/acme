@@ -1,0 +1,53 @@
+# ONE CALL, MANY ANSWERS. `transport: sse` says the reply arrives as a stream of
+# events rather than one body, which is what makes this node a CallbackNode.
+# https://docs.unoverse.ai/nodes/node-types
+
+- name: generate
+  method: POST
+  url: https://api.openai.com/v1/responses
+
+  # HOW THE NODE PROVES ITSELF TO THE VENDOR. This is OUTBOUND authentication, and it
+  # is a different thing from node.yaml's `auth`, which is who may RUN the node.
+  #
+  # `scheme: bearer` is an executor capability: the executor attaches the header, so
+  # no manifest ever handles the secret itself. The token path selects the credential
+  # BY NAME from the shapes this package declares. Note also that api.openai.com is
+  # in package.yaml's allowedHosts; a manifest cannot send this token anywhere that
+  # list does not name. https://docs.unoverse.ai/nodes/credentials
+  credential:
+    scheme: bearer
+    token: "{{ credentials.openAICredential.apiKey }}"
+
+  body:
+    model: "{{ config.model }}"
+    # A REQUEST WHOSE SHAPE CHANGES WITH THE SETTINGS. The system message exists only
+    # when the builder wrote one: sending an empty message is a 400 from the vendor,
+    # so the body is built by an expression rather than a fixed template. A field
+    # that is one "{{ path }}" stays a template; a field that must DECIDE something
+    # is an expression.
+    input: >-
+      return [
+        config.systemPrompt
+          ? { type: "message", role: "system", content: config.systemPrompt }
+          : null,
+        { type: "message", role: "user", content: config.prompt }
+      ].filter(Boolean)
+    max_output_tokens: "{{ config.maxTokens }}"
+    stream: true
+
+  timeoutMs: 300000
+
+  retry:
+    attempts: 3
+    backoff: exponential
+    on: [429, 500, 502, 503, 504]
+
+  # The reply's framing belongs to the call: it streams server-sent events until the
+  # terminator line.
+  transport: sse
+  terminator: "[DONE]"
+
+  # A 200 carrying an error body must not read as success.
+  error:
+    when: "return response.type === 'response.failed'"
+    message: "return response.response.error.message"

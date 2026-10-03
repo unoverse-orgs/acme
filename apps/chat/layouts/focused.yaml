@@ -1,0 +1,12 @@
+# FOCUSED — a component holding the conversation region, composer live beneath.
+# A LAYOUT owned by the `focused` state: a hosted component writes `view: focused`,
+# the ladder makes this arrangement active, this file draws it.
+type: Box
+style:
+  direction: row
+  width: full
+  height: full
+  overflow: hidden
+  background: surface.sunken
+children:
+  - $include: components/core-focus

@@ -1,0 +1,12 @@
+unoverse: '1.0'
+kind: component
+name: welcome
+category: Content
+description: A first component. Edit this file and Studio updates as you save.
+root:
+  type: Stack
+  style: { gap: '4', padding: '6' }
+  children:
+    - type: Text
+      value: Hello from your first component
+      style: { font: 'body.lg', color: 'text.primary' }

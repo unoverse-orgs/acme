@@ -1,0 +1,20 @@
+type: Box
+autoScroll: true
+style:
+  flex: 1
+  minHeight: "0"
+  direction: column
+  overflow: auto
+  padding: [ "6", "8" ]
+children:
+  - type: Timeline
+    style:
+      direction: column
+      gap: "4"
+      margin: [ auto, "0", "0", "0" ]
+    assistantData:
+      thinkingText: Thinking…
+    user:
+      $include: components/user-turn
+    assistant:
+      $include: components/assistant-turn

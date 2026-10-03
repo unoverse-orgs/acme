@@ -1,0 +1,44 @@
+# THE SETTINGS FORM. https://docs.unoverse.ai/nodes/config-schema
+
+configSchema:
+  type: object
+  required: [model, prompt]
+
+  properties:
+    model:
+      type: string
+      title: Model
+      description: The model that writes the reply
+      enum: [gpt-5.6, gpt-5.6-terra, gpt-5.6-luna]
+      default: gpt-5.6-terra
+      "ui:widget": select
+
+    prompt:
+      type: string
+      title: Prompt
+      description: >-
+        What to ask. A template field, so values from earlier nodes compose in
+        directly, e.g. Summarize this update. {{signal.weather1.summary}}
+      default: ""
+      ui:field: template
+
+    systemPrompt:
+      type: string
+      title: System Prompt
+      description: >-
+        Standing instructions for every run: the model's role, tone and limits.
+        Optional. NEVER paste instruction text into a manifest file itself; shared
+        instruction copy belongs in the prompt block library and is referenced here
+        as {{prompt.<blockName>}}, so it keeps tracking the block when the block is
+        edited.
+      default: ""
+      ui:field: template
+
+    maxTokens:
+      type: number
+      title: Max output tokens
+      description: The ceiling on how long the reply may run
+      default: 1024
+      minimum: 16
+      maximum: 32768
+"ui:order": [model, prompt, systemPrompt, maxTokens]

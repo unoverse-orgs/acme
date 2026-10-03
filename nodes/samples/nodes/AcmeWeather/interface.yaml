@@ -1,0 +1,24 @@
+# WHAT THIS NODE CONNECTS TO: the sockets on the box a builder sees on the canvas.
+#
+# Output names become what someone types in a template later
+# ("{{signal.weather1.summary}}"), so they are named for what they CARRY.
+# https://docs.unoverse.ai/nodes/signal-routing
+
+inputs:
+  - name: signal
+    type: object
+    description: Data from previous nodes that can be referenced in templates
+
+outputs:
+  # The full picture, for binding into a component field by field.
+  - name: weather
+    type: object
+    description: Place, current conditions and the daily outlook, as one object
+
+  # The one-line version, for dropping straight into text.
+  - name: summary
+    type: string
+    description: A single sentence, like "18° and partly cloudy in Lisbon"
+
+# No credentials block: Open-Meteo asks for no key. See AcmeChatStream for a node
+# that needs one.

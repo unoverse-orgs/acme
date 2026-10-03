@@ -1,0 +1,39 @@
+# WHAT THIS NODE IS: the second worked example, a CallbackNode.
+#
+# Read AcmeWeather first. This node adds the two things weather cannot show you:
+# a reply that STREAMS in as many events instead of settling once, and a call that
+# must prove itself to the service with a CREDENTIAL.
+# https://docs.unoverse.ai/nodes/node-types
+
+type: AcmeChatStream
+
+# A node that keeps answering. Lint checks this rather than trusting it: the LAST
+# call in api/run.yaml has `transport: sse`, so declaring PromiseNode here would be
+# an error naming exactly that contradiction.
+kind: CallbackNode
+
+name: Chat Stream Sample
+category: AI
+color: "#7C5CFF"
+
+description: A model reply streamed word by word as it is written, the simplest streaming shape
+
+# Ranked against the user's own words, so: outcome first, disqualifiers as
+# properties of the work, wiring fact last, and never the name of another node.
+# https://docs.unoverse.ai/nodes/node-discoverability
+whenToUse: >-
+  A worked example for learning the streaming node shape: send a prompt, watch the
+  reply arrive word by word, and read the manifest that made it happen. A single
+  pass with no tools and no memory, so real workloads that need tool calls,
+  reasoning control or multi-turn state want a fuller model node.
+
+# WHO MAY RUN THIS. Compulsory, and separate from the credential below: this block
+# is who may press the button, the credential is how the node proves itself to the
+# vendor once pressed. https://docs.unoverse.ai/nodes/who-can-run-it
+auth:
+  required: false
+
+capabilities:
+  # A model completion is non-deterministic: re-running is correct behaviour, and
+  # reusing a previous answer would be wrong, not thrifty.
+  cacheable: false

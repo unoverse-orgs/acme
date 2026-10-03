@@ -1,0 +1,36 @@
+# A GENERIC CHAT — a worked example app, shipped with Studio so apps/ is
+# never an empty folder. It is yours: rename it, restyle it (it uses only foundation
+# tokens, so your project's theme restyles it whole), or delete it.
+# Guide: https://docs.unoverse.ai/design/apps.md
+name: chat
+description: A conversational assistant surface with a welcome hero, suggestions, and a focus overlay.
+whenToUse: Talk to the assistant — ask a question, get help, or start any task in conversation. The conversational home and fallback surface.
+category: Assistant
+version: 1.0.0
+defaultState: app
+inputSchema:
+  type: object
+  properties:
+    message:
+      type: string
+      description: The user's request
+
+# THE TEMPLATE TREE (State Model v2): one declaration, everything follows.
+# Top-level order IS the priority ladder (base first, then reaction states). No
+# stateOrder, no hand-written guards.
+# NOTE: the chat itself is not a state here. Its two moods (welcome hero / live
+# timeline) live inside the text-chat component, which both cores draw via
+# components/chat-region. The component defaults to welcome on an empty conversation
+# and hands over to the timeline the moment messages exist.
+states:
+  standard: { layout: layouts/standard }
+  focused: { layout: layouts/focused }
+
+preview:
+  focused: [ card ]
+
+autoTrigger: false
+# BIND YOUR WORKFLOW to bring this to life: build one on the Canvas, then set
+#   binding: { workflow: <workflow-id>, trigger: <trigger-node-id> }
+# The app owns its workflow; until it is bound, this template previews but cannot run.
+layout: standard

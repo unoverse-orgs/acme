@@ -1,0 +1,14 @@
+type: Box
+appWidth: chat
+style:
+  direction: column
+  minHeight: "0"
+children:
+  - type: Box
+    style:
+      direction: column
+      flex: 1
+      minHeight: "0"
+      position: relative
+    children:
+      - $include: components/chat-region
